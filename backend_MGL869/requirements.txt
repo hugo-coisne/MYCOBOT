@@ -4,3 +4,7 @@ flask-restx
 numpy
 scikit-learn
 joblib
+pandas
+ucimlrepo
+optuna
+firebase_admin

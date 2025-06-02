@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: ./backend_MGL869
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend_MGL869:/app
+    environment:
+      - FLASK_ENV=development
+
+  frontend:
+    build: ./frontend_MGL869
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
