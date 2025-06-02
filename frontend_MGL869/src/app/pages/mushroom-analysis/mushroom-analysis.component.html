@@ -1,0 +1,988 @@
+<div
+  class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+  style="
+    min-height: 450px;
+    background-image: url(assets/img/theme/biology.png);
+    background-size: cover;
+    background-position: center top;
+  "
+>
+  <!-- Mask -->
+  <span class="mask bg-gradient-danger opacity-8"></span>
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row">
+      <div class="col-lg-12 col-md-10">
+        <h1 class="display-2 text-white">Welcome back !</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-xl-12 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <ng-container *ngIf="!showResult">
+                <h3 class="mb-0" *ngIf="!(isLoading$ | async)">
+                  Mushroom Characteristics
+                </h3>
+                <h3 class="mb-0" *ngIf="isLoading$ | async">
+                  Analysis in progress...
+                </h3>
+              </ng-container>
+
+              <h3 class="mb-0" *ngIf="showResult && !(isLoading$ | async)">
+                Mushroom Analysis Result
+              </h3>
+            </div>
+            <div class="col-4 text-right">
+              <button
+                type="submit"
+                class="btn btn-sm btn-primary"
+                form="mushroomFormId"
+                *ngIf="!(isLoading$ | async) && !showResult"
+              >
+                Analyze
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Loading Spinner -->
+          <div
+            class="d-flex align-items-center justify-content-center m-t-16 m-b-16 loadingDiv"
+            *ngIf="isLoading$ | async"
+          >
+            <div class="loader text-primary"></div>
+            <span class="loadingSpan text-primary"> Loading ... </span>
+          </div>
+
+          <!-- Formulaire -->
+          <form
+            [formGroup]="mushroomForm"
+            (ngSubmit)="onSubmit()"
+            id="mushroomFormId"
+            *ngIf="!(isLoading$ | async) && !showResult"
+          >
+            <!-- Cap Characteristics -->
+            <h6 class="heading-small text-muted mb-4">Cap Characteristics</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <!-- Cap Shape -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="capShape"
+                    >
+                      <span> Cap Shape<span class="required">*</span> </span>
+                      <span class="tooltip-icon" [title]="tooltipTexts.capShape"
+                        >ℹ️</span
+                      >
+                    </label>
+                    <select
+                      id="capShape"
+                      class="form-control form-control-alternative"
+                      formControlName="capShape"
+                    >
+                      <option value="">Select a cap shape</option>
+                      <option
+                        *ngFor="let item of capShapes"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('capShape')?.invalid &&
+                        mushroomForm.get('capShape')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Cap Surface -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="capSurface"
+                    >
+                      <span> Cap Surface<span class="required">*</span> </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.capSurface"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="capSurface"
+                      class="form-control form-control-alternative"
+                      formControlName="capSurface"
+                    >
+                      <option value="">Select a cap surface</option>
+                      <option
+                        *ngFor="let item of capSurfaces"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('capSurface')?.invalid &&
+                        mushroomForm.get('capSurface')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+                <!-- Cap Color -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="capColor"
+                    >
+                      <span> Cap Color<span class="required">*</span> </span>
+                      <span class="tooltip-icon" [title]="tooltipTexts.capColor"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="capColor"
+                      class="form-control form-control-alternative"
+                      formControlName="capColor"
+                    >
+                      <option value="">Select a cap color</option>
+                      <option
+                        *ngFor="let item of capColors"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('capColor')?.invalid &&
+                        mushroomForm.get('capColor')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+                <!-- Bruises -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="bruises"
+                    >
+                      <span> Bruises<span class="required">*</span> </span>
+                      <span class="tooltip-icon" [title]="tooltipTexts.bruises"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="bruises"
+                      class="form-control form-control-alternative"
+                      formControlName="bruises"
+                    >
+                      <option value="">Select bruises option</option>
+                      <option *ngFor="let item of bruises" [value]="item.value">
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('bruises')?.invalid &&
+                        mushroomForm.get('bruises')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+                <!-- Odor -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="odor"
+                    >
+                      <span> Odor<span class="required">*</span> </span>
+                      <span class="tooltip-icon" [title]="tooltipTexts.odor"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="odor"
+                      class="form-control form-control-alternative"
+                      formControlName="odor"
+                    >
+                      <option value="">Select an odor</option>
+                      <option *ngFor="let item of odors" [value]="item.value">
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('odor')?.invalid &&
+                        mushroomForm.get('odor')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Gill Characteristics -->
+            <h6 class="heading-small text-muted mb-4">Gill Characteristics</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <!-- Gill Attachment -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="gillAttachment"
+                    >
+                      <span>
+                        Gill Attachment<span class="required">*</span>
+                      </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.gillAttachment"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="gillAttachment"
+                      class="form-control form-control-alternative"
+                      formControlName="gillAttachment"
+                    >
+                      <option value="">Select gill attachment</option>
+                      <option
+                        *ngFor="let item of gillAttachments"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('gillAttachment')?.invalid &&
+                        mushroomForm.get('gillAttachment')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Gill Spacing -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="gillSpacing"
+                    >
+                      <span> Gill Spacing<span class="required">*</span></span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.gillSpacing"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="gillSpacing"
+                      class="form-control form-control-alternative"
+                      formControlName="gillSpacing"
+                    >
+                      <option value="">Select gill spacing</option>
+                      <option
+                        *ngFor="let item of gillSpacings"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('gillSpacing')?.invalid &&
+                        mushroomForm.get('gillSpacing')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Gill Size -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="gillSize"
+                    >
+                      <span> Gill Size<span class="required">*</span> </span>
+                      <span class="tooltip-icon" [title]="tooltipTexts.gillSize"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="gillSize"
+                      class="form-control form-control-alternative"
+                      formControlName="gillSize"
+                    >
+                      <option value="">Select gill size</option>
+                      <option
+                        *ngFor="let item of gillSizes"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('gillSize')?.invalid &&
+                        mushroomForm.get('gillSize')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Gill Color -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="gillColor"
+                    >
+                      <span> Gill Color<span class="required">*</span> </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.gillColor"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="gillColor"
+                      class="form-control form-control-alternative"
+                      formControlName="gillColor"
+                    >
+                      <option value="">Select gill color</option>
+                      <option
+                        *ngFor="let item of gillColors"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('gillColor')?.invalid &&
+                        mushroomForm.get('gillColor')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+            <!-- Stalk Characteristics -->
+            <h6 class="heading-small text-muted mb-4">Stalk Characteristics</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <!-- Stalk Shape -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="stalkShape"
+                    >
+                      <span> Stalk Shape<span class="required">*</span> </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.stalkShape"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="stalkShape"
+                      class="form-control form-control-alternative"
+                      formControlName="stalkShape"
+                    >
+                      <option value="">Select stalk shape</option>
+                      <option
+                        *ngFor="let item of stalkShapes"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('stalkShape')?.invalid &&
+                        mushroomForm.get('stalkShape')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stalk Root -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="stalkRoot"
+                    >
+                      <span> Stalk Root<span class="required">*</span> </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.stalkRoot"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="stalkRoot"
+                      class="form-control form-control-alternative"
+                      formControlName="stalkRoot"
+                    >
+                      <option value="">Select stalk root</option>
+                      <option
+                        *ngFor="let item of stalkRoots"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('stalkRoot')?.invalid &&
+                        mushroomForm.get('stalkRoot')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stalk Surface Above -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="stalkSurfaceAbove"
+                    >
+                      <span>
+                        Stalk Surface Above<span class="required">*</span>
+                      </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.stalkSurfaceAbove"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="stalkSurfaceAbove"
+                      class="form-control form-control-alternative"
+                      formControlName="stalkSurfaceAbove"
+                    >
+                      <option value="">Select surface above ring</option>
+                      <option
+                        *ngFor="let item of stalkSurfacesAbove"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('stalkSurfaceAbove')?.invalid &&
+                        mushroomForm.get('stalkSurfaceAbove')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stalk Surface Below -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="stalkSurfaceBelow"
+                    >
+                      <span>
+                        Stalk Surface Below<span class="required">*</span>
+                      </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.stalkSurfaceBelow"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="stalkSurfaceBelow"
+                      class="form-control form-control-alternative"
+                      formControlName="stalkSurfaceBelow"
+                    >
+                      <option value="">Select surface below ring</option>
+                      <option
+                        *ngFor="let item of stalkSurfacesBelow"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('stalkSurfaceBelow')?.invalid &&
+                        mushroomForm.get('stalkSurfaceBelow')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stalk Color Above -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="stalkColorAbove"
+                    >
+                      <span>
+                        Stalk Color Above<span class="required">*</span>
+                      </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.stalkColorAbove"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="stalkColorAbove"
+                      class="form-control form-control-alternative"
+                      formControlName="stalkColorAbove"
+                    >
+                      <option value="">Select color above ring</option>
+                      <option
+                        *ngFor="let item of stalkColorsAbove"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('stalkColorAbove')?.invalid &&
+                        mushroomForm.get('stalkColorAbove')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stalk Color Below -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="stalkColorBelow"
+                    >
+                      <span>
+                        Stalk Color Below<span class="required">*</span>
+                      </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.stalkColorBelow"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="stalkColorBelow"
+                      class="form-control form-control-alternative"
+                      formControlName="stalkColorBelow"
+                    >
+                      <option value="">Select color below ring</option>
+                      <option
+                        *ngFor="let item of stalkColorsBelow"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('stalkColorBelow')?.invalid &&
+                        mushroomForm.get('stalkColorBelow')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+            <!-- Veil & Ring Characteristics -->
+            <h6 class="heading-small text-muted mb-4">
+              Veil & Ring Characteristics
+            </h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <!-- Veil Color -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="veilColor"
+                    >
+                      <span> Veil Color<span class="required">*</span> </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.veilColor"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="veilColor"
+                      class="form-control form-control-alternative"
+                      formControlName="veilColor"
+                    >
+                      <option value="">Select veil color</option>
+                      <option
+                        *ngFor="let item of veilColors"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('veilColor')?.invalid &&
+                        mushroomForm.get('veilColor')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Ring Number -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="ringNumber"
+                    >
+                      <span> Ring Number<span class="required">*</span> </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.ringNumber"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="ringNumber"
+                      class="form-control form-control-alternative"
+                      formControlName="ringNumber"
+                    >
+                      <option value="">Select number of rings</option>
+                      <option
+                        *ngFor="let item of ringNumbers"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('ringNumber')?.invalid &&
+                        mushroomForm.get('ringNumber')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Ring Type -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="ringType"
+                    >
+                      <span> Ring Type<span class="required">*</span> </span>
+                      <span class="tooltip-icon" [title]="tooltipTexts.ringType"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="ringType"
+                      class="form-control form-control-alternative"
+                      formControlName="ringType"
+                    >
+                      <option value="">Select ring type</option>
+                      <option
+                        *ngFor="let item of ringTypes"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('ringType')?.invalid &&
+                        mushroomForm.get('ringType')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="my-4" />
+            <!-- Spore & Environment Characteristics -->
+            <h6 class="heading-small text-muted mb-4">
+              Spore & Environment Characteristics
+            </h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <!-- Spore Print Color -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="sporePrintColor"
+                    >
+                      <span>
+                        Spore Print Color<span class="required">*</span>
+                      </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.sporePrintColor"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="sporePrintColor"
+                      class="form-control form-control-alternative"
+                      formControlName="sporePrintColor"
+                    >
+                      <option value="">Select spore print color</option>
+                      <option
+                        *ngFor="let item of sporePrintColors"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('sporePrintColor')?.invalid &&
+                        mushroomForm.get('sporePrintColor')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Population -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="population"
+                    >
+                      <span> Population<span class="required">*</span> </span>
+                      <span
+                        class="tooltip-icon"
+                        [title]="tooltipTexts.population"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="population"
+                      class="form-control form-control-alternative"
+                      formControlName="population"
+                    >
+                      <option value="">Select population</option>
+                      <option
+                        *ngFor="let item of populations"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('population')?.invalid &&
+                        mushroomForm.get('population')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Habitat -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label
+                      class="form-control-label label-with-tooltip"
+                      for="habitat"
+                    >
+                      <span> Habitat<span class="required">*</span> </span>
+                      <span class="tooltip-icon" [title]="tooltipTexts.habitat"
+                        >ℹ️</span
+                      ></label
+                    >
+                    <select
+                      id="habitat"
+                      class="form-control form-control-alternative"
+                      formControlName="habitat"
+                    >
+                      <option value="">Select habitat</option>
+                      <option
+                        *ngFor="let item of habitats"
+                        [value]="item.value"
+                      >
+                        {{ item.label }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        mushroomForm.get('habitat')?.invalid &&
+                        mushroomForm.get('habitat')?.touched
+                      "
+                      style="color: red; font-size: 11px"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <!-- Résultat de la prédiction -->
+          <div *ngIf="!(isLoading$ | async) && showResult">
+            <h4>Prediction Result :</h4>
+            <div class="d-flex align-items-center p-3 rounded">
+              <span class="mr-2" *ngIf="predictionResult === 'edible'">
+                <i class="fa-solid fa-circle-check text-success"></i
+              ></span>
+              <span class="mr-2" *ngIf="predictionResult === 'poisonous'">
+                <i class="fa-solid fa-circle-xmark text-danger"></i
+              ></span>
+              <span>
+                {{
+                  predictionResult === "edible"
+                    ? "This mushroom is likely edible."
+                    : "Warning! This mushroom is likely poisonous."
+                }}
+              </span>
+            </div>
+
+            <!-- Explication -->
+            <h4>Explication :</h4>
+            <div class="d-flex align-items-center p-3 rounded">
+              <ul>
+                <li>Because ...</li>
+              </ul>
+            </div>
+
+            <!-- Expert validation disclaimer -->
+            <div>
+              <p class="mt-2">
+                <i
+                  class="fa-solid fa-triangle-exclamation"
+                  style="color: #ffd43b"
+                ></i>
+                This result is based on an AI prediction. The final decision
+                should always be validated by a qualified expert before
+                consumption or disposal.
+              </p>
+            </div>
+
+            <!-- User Feedback -->
+            <div class="form-group">
+              <label for="userFeedback"
+                >Do you think this result is wrong?</label
+              >
+              <textarea
+                class="form-control"
+                [(ngModel)]="userFeedback"
+                name="userFeedback"
+                placeholder="Let us know why you think the prediction is incorrect..."
+                rows="3"
+              ></textarea>
+            </div>
+            <div class="text-right">
+              <button
+                class="btn btn-warning"
+                (click)="sendFeedback()"
+                [disabled]="!userFeedback.trim()"
+              >
+                Send Feedback
+              </button>
+              <button class="btn btn-secondary ml-2" (click)="reset()">
+                Start Over
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
