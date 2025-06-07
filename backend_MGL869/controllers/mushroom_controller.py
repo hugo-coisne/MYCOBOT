@@ -5,7 +5,7 @@ import os
 from ML.train_test_dummy import train_save_model
 from ML.inference import predict_single
 
-MODEL_PATH = "project/ML/KNN_model_Optuna.pkl"
+MODEL_PATH = "ML/KNN_model_Optuna.pkl"
 
 
 def analyze_mushroom(data):

@@ -7,12 +7,12 @@ from sklearn.preprocessing import LabelEncoder
 
 def load_objects():
     # Chargement des objets
-    model = joblib.load("project/ML/KNN_model_Optuna.pkl")
-    scaler = joblib.load("project/ML/saved_objects/scaler.pkl")
-    pca = joblib.load("project/ML/saved_objects/pca.pkl")
-    target_encoder = joblib.load("project/ML/saved_objects/target_encoder.pkl")
-    column_order = joblib.load("project/ML/saved_objects/column_order.pkl")
-    onehot_columns = joblib.load("project/ML/saved_objects/onehot_columns.pkl")
+    model = joblib.load("ML/KNN_model_Optuna.pkl")
+    scaler = joblib.load("ML/saved_objects/scaler.pkl")
+    pca = joblib.load("ML/saved_objects/pca.pkl")
+    target_encoder = joblib.load("ML/saved_objects/target_encoder.pkl")
+    column_order = joblib.load("ML/saved_objects/column_order.pkl")
+    onehot_columns = joblib.load("ML/saved_objects/onehot_columns.pkl")
     return model, scaler, pca, target_encoder, column_order, onehot_columns
 
 
