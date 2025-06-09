@@ -3,7 +3,7 @@ from firebase_admin import credentials, firestore
 import os
 
 FIREBASE_CREDENTIAL_PATH = os.getenv(
-    "FIREBASE_CREDENTIAL_PATH", "./project/firebase/firebase-adminsdk.json"
+    "FIREBASE_CREDENTIAL_PATH", "./firebase.json"
 )
 
 

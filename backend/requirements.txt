@@ -8,3 +8,4 @@ pandas
 ucimlrepo
 optuna
 firebase_admin
+ollama
