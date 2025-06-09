@@ -3,7 +3,7 @@
 ### Démarrage de l'application
 Pour démarrer l'application (le modèle d'IA est déjà entraîné) :
 
-`docker compose up -d`
+`docker compose --profile app up -d`
 
 Une fois l'application en service : l'interface utilisateur est accessible sur le port `4200` de la machine sur laquelle l'application est déployée. 
 Si l'application est déployée localement sur un poste de travail, l'url est [`http://localhost:4200`](http://localhost:4200)
@@ -23,3 +23,8 @@ Pour démarrer un test de charge (l'application Mycobot doit être en service av
 `docker compose --profile load-testing up -d`
 
 L'interface de grafana devrait afficher les statistiques du test de charge dans `Dashboards` > `k6 Load Testing`
+
+### Démarrage complet
+Pour démarrer l'intégralité des services en une seule commande : 
+
+`docker compose --profile all up -d`
