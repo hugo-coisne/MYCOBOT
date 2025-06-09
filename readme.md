@@ -1,6 +1,16 @@
 # Mycobot
 
-### Démarrage de l'application
+## Prérequis
+*Docker* et *Docker Compose* sont requis pour suivre les indications de build & run suivantes.
+
+## Instructions de compilation (build) de l'application
+Pour générer les images Docker de l'application depuis la racine du projet:
+
+`docker compose --profile --app build`
+
+## Instructions de démarrage (run) de l'application
+
+### Démarrage (Run) de l'application
 Pour démarrer l'application (le modèle d'IA est déjà entraîné) :
 
 `docker compose --profile app up -d`
