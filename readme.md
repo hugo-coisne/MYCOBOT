@@ -22,4 +22,4 @@ Pour démarrer un test de charge (l'application Mycobot doit être en service av
 
 `docker compose --profile load-testing up -d`
 
-L'interface de grafana devrait afficher les statistiques du test de charge dans `Dashboards>k6 Load Testing`
+L'interface de grafana devrait afficher les statistiques du test de charge dans `Dashboards` > `k6 Load Testing`
