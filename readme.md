@@ -3,17 +3,12 @@
 ## Prérequis
 *Docker* et *Docker Compose* sont requis pour suivre les indications de build & run suivantes.
 
-## Instructions de compilation (build) de l'application
-Pour générer les images Docker de l'application depuis la racine du projet:
-
-`docker compose --profile --app build`
-
-## Instructions de démarrage (run) de l'application
-
 ### Démarrage (Run) de l'application
-Pour démarrer l'application (le modèle d'IA est déjà entraîné) :
+Pour démarrer l'application (le modèle de classification de champignons est déjà entraîné) :
 
-`docker compose --profile app up -d`
+`docker compose --profile app up -d && docker exec -it mycobot-ollama-1 ollama pull gemma3:latest`
+
+La première partie de cette  commande va récupérer toutes les images docker nécessaire au fonctionnement et build les images du frontend et du backend. La seconde va récupérer le LLM gemma3 (nécessaire pour l'analyse de feedbacks utilisateurs).
 
 Une fois l'application en service : l'interface utilisateur est accessible sur le port `4200` de la machine sur laquelle l'application est déployée. 
 Si l'application est déployée localement sur un poste de travail, l'url est [`http://localhost:4200`](http://localhost:4200)

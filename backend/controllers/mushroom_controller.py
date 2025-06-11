@@ -4,8 +4,13 @@ import pandas as pd
 import os
 from ML.train_test_dummy import train_save_model
 from ML.inference import predict_single
+from ollama import Client as OllamaClient
 
 MODEL_PATH = "ML/KNN_model_Optuna.pkl"
+
+ollamaClient = OllamaClient(
+  host='http://mycobot-ollama-1:11434'
+)
 
 
 def analyze_mushroom(data):
@@ -30,15 +35,15 @@ def save_userFeedback(
         mushroom_data = json.loads(mushroom_json)
         userFeedbackRef = firestoreDB.collection("UserFeedbacks").document()
 
-        # analysis_explanation, is_valid = analyze_feedback_with_llama(user_feedback) uncomment once firebase works
+        analysis_explanation, is_valid = analyze_feedback_with_llama(user_feedback)
 
         doc_data = {
             "mushroom": mushroom_data,
             "predicted_class": predicted_class,
             "user_feedback": user_feedback,
             "timestamp": datetime.now().isoformat(),
-            "llama_analysis": "analysis_explanation", # unquote once firebase works
-            "is_valid": True, # use is_valid variable once firebase works
+            "llama_analysis": analysis_explanation,
+            "is_valid": is_valid,
         }
         userFeedbackRef.set(doc_data)
 
@@ -48,7 +53,7 @@ def save_userFeedback(
         raise Exception(f"Error saving user feedback: {str(e)}")
 
 
-def analyze_feedback_with_llama(feedback: str) -> bool: # adapt for dockerized ollama
+def analyze_feedback_with_llama(feedback: str) -> bool:
     prompt = (
         "Tu es un assistant IA chargé d’analyser les feedbacks sur une prédiction de champignon. "
         "Dis si le feedback est pertinent ou non pour améliorer un modèle de classification. "
@@ -58,8 +63,8 @@ def analyze_feedback_with_llama(feedback: str) -> bool: # adapt for dockerized o
     )
 
     try:
-        response = ollama.chat(
-            model="gemma:2b", messages=[{"role": "user", "content": prompt}]
+        response = ollamaClient.chat(
+            model="gemma3:latest", messages=[{"role": "user", "content": prompt}]
         )
         result = response["message"]["content"].strip().lower()
         invalid_phrases = ["non pertinent", "n'est pas pertinent"]

@@ -25,7 +25,12 @@ services:
       - ./ollama:/root/.ollama
     ports:
       - "11434:11434"
+    environment:
+      - OLLAMA_ORIGINS=*
     command: "serve"
+    profiles:
+      - app
+      - all
   
   # Monitoring  
   grafana:
