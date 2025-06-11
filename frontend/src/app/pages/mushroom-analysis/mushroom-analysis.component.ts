@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject, delay } from "rxjs";
 import { Mushroom } from "src/app/models/mushroom";
 import { UserFeedback } from "src/app/models/userFeedback";
 import { MushroomService } from "src/app/services/mushroom.service";
-import { ActiveToast, ToastrService } from "ngx-toastr";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-mushroom-analysis",
