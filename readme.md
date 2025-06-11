@@ -3,7 +3,7 @@
 ## Prérequis
 *Docker* et *Docker Compose* sont requis pour suivre les indications de build & run suivantes.
 
-### Démarrage (Run) de l'application
+## Démarrage (Run) de l'application
 Pour démarrer l'application (le modèle de classification de champignons est déjà entraîné) :
 
 `docker compose --profile app up -d && docker exec -it mycobot-ollama-1 ollama pull gemma3:latest`
