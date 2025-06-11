@@ -18,32 +18,16 @@ services:
     profiles:
       - app
       - all
-  
-  # Monitoring
-  otelcol:
-    image: ${COLLECTOR_CONTRIB_IMAGE}
-    container_name: otel-col
-    restart: unless-stopped
-    command: [ "--config=/etc/otelcol-config.yml", "--config=/etc/otelcol-config-extras.yml" ]
-    user: 0:0
+    
+  ollama:
+    image: ollama/ollama
     volumes:
-      - ${HOST_FILESYSTEM}:/hostfs:ro,rslave
-      - ${DOCKER_SOCK}:/var/run/docker.sock:ro
-      - ${OTEL_COLLECTOR_CONFIG}:/etc/otelcol-config.yml
-      - ${OTEL_COLLECTOR_CONFIG_EXTRAS}:/etc/otelcol-config-extras.yml
+      - ./ollama:/root/.ollama
     ports:
-      - "${OTEL_COLLECTOR_PORT_HTTP}"
-      - "${OTEL_COLLECTOR_PORT_GRPC}"
-      - "8888:8888"
-    environment:
-      - HOST_FILESYSTEM
-      - OTEL_COLLECTOR_HOST
-      - OTEL_COLLECTOR_PORT_GRPC
-      - OTEL_COLLECTOR_PORT_HTTP
-    profiles:
-      - monitoring
-      - all
+      - "11434:11434"
+    command: "serve"
   
+  # Monitoring  
   grafana:
     image: ${GRAFANA_IMAGE}
     container_name: grafana
@@ -72,9 +56,7 @@ services:
     profiles:
       - load-testing
       - all
-    depends_on:
-      - backend
-      - frontend
+
   k6:
     image: grafana/k6:latest
     container_name: k6

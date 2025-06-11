@@ -52,8 +52,6 @@ function submitMushroom(FORM_DATA) {
     `${BACKEND_URL}/mushroom/analyze`,
     FORM_DATA
   );
-
-  console.log(`Response : ${res.status} ${res.body}`);
 };
 
 
