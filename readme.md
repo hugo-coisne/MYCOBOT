@@ -1,4 +1,6 @@
-# Mycobot
+# Mycobot 
+
+**_NOTE:_** Le stockage du feedback utilise une clé éphémère (inadaptée pour la production) pour Firebase. Une tentative de *soumission de feedback* lors de l'utilisation du projet mènera probablement à une erreur 500 suite à l'*expiration* de la clé éphémère.
 
 ## Prérequis
 *Docker* et *Docker Compose* sont requis pour suivre les indications de build & run suivantes.
@@ -8,7 +10,7 @@ Pour démarrer l'application (le modèle de classification de champignons est d�
 
 `docker compose --profile app up -d && docker exec -it mycobot-ollama-1 ollama pull gemma3:latest`
 
-La première partie de cette  commande va récupérer toutes les images docker nécessaire au fonctionnement et build les images du frontend et du backend. La seconde va récupérer le LLM gemma3 (nécessaire pour l'analyse de feedbacks utilisateurs).
+La première partie de cette  commande va récupérer toutes les images docker nécessaire au fonctionnement et build les images du frontend et du backend. La seconde va récupérer le LLM gemma3 (nécessaire pour l'analyse de feedbacks utilisateurs). Gemma3 est un modèle de taille raisonnable (3.3GB) mais nécessite tout de même de l'espace de stockage et de la puissance de calcul suffisante pour son utilisation.
 
 Une fois l'application en service : l'interface utilisateur est accessible sur le port `4200` de la machine sur laquelle l'application est déployée. 
 Si l'application est déployée localement sur un poste de travail, l'url est [`http://localhost:4200`](http://localhost:4200)
